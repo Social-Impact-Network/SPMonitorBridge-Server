@@ -42,8 +42,8 @@ class SunnyPortal{
 		  
 			await this.page.waitForSelector('#DataTables_Table_0_info').catch(e => { throw new Error('Login Failed')});
             
-            var PVtoday = await this.page.evaluate(() => { return parseFloat(document.getElementById("ac33056e-02d8-4bba-af8b-394795fda506").getElementsByTagName("td")[3].innerText); }) || 0;
-            var PVyesterday = await this.page.evaluate(() => {return parseFloat(document.getElementById("ac33056e-02d8-4bba-af8b-394795fda506").getElementsByTagName("td")[2].innerText); }) || 0;
+            var PVtoday = await this.page.evaluate(() => { return parseFloat(document.getElementById(this.plantID).getElementsByTagName("td")[3].innerText); }) || 0;
+            var PVyesterday = await this.page.evaluate(() => {return parseFloat(document.getElementById(this.plantID).getElementsByTagName("td")[2].innerText); }) || 0;
 
 
             var todayObj = new Date();
