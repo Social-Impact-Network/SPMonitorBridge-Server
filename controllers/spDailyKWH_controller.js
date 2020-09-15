@@ -3,8 +3,6 @@ const spDailyKWH = require("../model/spDailyKWH");
 
 exports.create = (_plantID, _day, _kwh) => {
    
-
-
     /**
      * Create spDailyKWH db Input
      */

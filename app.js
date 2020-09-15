@@ -4,10 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var db = require("./db");
-
+var cron = require('./cron');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var spDaily = require('./routes/spDaily');
 const bodyParser= require('body-parser')
 
 
@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/spDailyKWH', spDaily);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

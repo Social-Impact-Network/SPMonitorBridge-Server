@@ -25,7 +25,7 @@ class SunnyPortal{
     }
 
 	async init(){
-
+        
 		this.browser = await puppeteer.launch({headless: true,
             slowMo: 250,
 			args: ['--no-sandbox',  '--disable-setuid-sandbox', '--window-size=1920,1080']});
@@ -40,17 +40,18 @@ class SunnyPortal{
 		  
 			await this.page.click('#ctl00_ContentPlaceHolder1_Logincontrol1_LoginBtn');
 		  
-			await this.page.waitForSelector('#DataTables_Table_0_info').catch(e => { throw new Error('Login Failed')});
+            await this.page.waitForSelector('#DataTables_Table_0_info').catch(e => { throw new Error('Login Failed')});
             
-            var PVtoday = await this.page.evaluate(() => { return parseFloat(document.getElementById(this.plantID).getElementsByTagName("td")[3].innerText); }) || 0;
-            var PVyesterday = await this.page.evaluate(() => {return parseFloat(document.getElementById(this.plantID).getElementsByTagName("td")[2].innerText); }) || 0;
 
+            var PVtoday = await this.page.evaluate((plantID) => { return parseFloat(document.getElementById(plantID).getElementsByTagName("td")[3].innerText); }, this.plantID) || 0;
+            var PVyesterday = await this.page.evaluate((plantID) => {return parseFloat(document.getElementById(plantID).getElementsByTagName("td")[2].innerText); }, this.plantID) || 0;
+        
 
             var todayObj = new Date();
             var yesterdayObj = new Date(Date.now() - 86400000);
            
-            this._PVtoday = [PVtoday, todayObj.getUTCDate() + "-" + todayObj.getUTCMonth() + "-" + todayObj.getUTCFullYear()];
-            this._PVyesterday = [PVyesterday, yesterdayObj.getUTCDate() + "-" + yesterdayObj.getUTCMonth() + "-" + yesterdayObj.getUTCFullYear()];        
+            this._PVtoday = [PVtoday,todayObj.toISOString().split("T")[0]];
+            this._PVyesterday = [PVyesterday,yesterdayObj.toISOString().split("T")[0]];       
 		  
 			this.browser.close();
 	}
