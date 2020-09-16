@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
+const spDailyKWH_controller = require("../controllers/spDailyKWH_controller");
+
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('return latest SP KWH Data');   
-});
+
+router.get("/:dayTs?", spDailyKWH_controller.findOne);
+
 
 module.exports = router;
