@@ -1,8 +1,7 @@
-const credentials = require('./private/credentials');
 
 const mongoose = require('mongoose');
 
-mongoose.connect(credentials.mongoDBuri, {useNewUrlParser: true}, 
+mongoose.connect(process.env.mongoDBuri, {useNewUrlParser: true}, 
 (err) => {
     if (!err) {
         console.log('Successfully Established Connection with MongoDB')
