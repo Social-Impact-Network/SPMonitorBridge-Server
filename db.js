@@ -1,6 +1,6 @@
 
 const mongoose = require('mongoose');
-
+ 
 mongoose.connect(process.env.mongoDBuri, {useNewUrlParser: true}, 
 (err) => {
     if (!err) {
