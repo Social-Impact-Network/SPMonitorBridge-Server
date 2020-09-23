@@ -4,15 +4,14 @@ const credentials = require('./private/credentials');
 const spDailyKWH = require("./controllers/spDailyKWH_controller");
 
 
-cron.schedule("*/5 * * * *", function() {
+cron.schedule("*/1 * * * *", function() {
+console.log("test");
 
-   
-
-    console.log("---------------------");
+/*    console.log("---------------------");
     console.log(new Date().toString() + " | Gathering SunnyPortal Data for: " + credentials.username + "; Plant: " + credentials.plantID);
 
     var sunnyPortal = new SunnyPortal(credentials.username, credentials.password, credentials.plantID);
     sunnyPortal.init().then(function() {
       spDailyKWH.create(credentials.plantID,sunnyPortal.PVyesterday[1],sunnyPortal.PVyesterday[0]);
-    })
+    })*/
   });
