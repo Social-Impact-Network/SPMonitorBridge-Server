@@ -9,5 +9,5 @@ mongoose.connect(process.env.mongoDBuri, {useNewUrlParser: true},
     else {
         console.log('Failed to Establish Connection with MongoDB with Error: '+ err)
     }
-});
+}); 
 module.exports = mongoose;
