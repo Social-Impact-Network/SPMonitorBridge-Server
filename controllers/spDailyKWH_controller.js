@@ -31,7 +31,9 @@ exports.findOne = (req, res) => {
     dayIn = new Date(Date.now() - 86400000).toISOString().split("T")[0];
   }
     
-  spDailyKWH.findOne({'day':dayIn}).then((spDailyKWH) => {
+  spDailyKWH.findOne({'day':dayIn}, {'_id': false, 'plantID': false, '__v': false}).map(function(doc) { 
+   return {'results': {'day': doc.day.getTime(), 'kwh': parseInt(doc.kwh) }}
+}).then((spDailyKWH) => {
     if (!spDailyKWH) {
       return res.status(404).send({
         message: "No entry found for day:  " + dayIn,
