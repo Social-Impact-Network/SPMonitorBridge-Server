@@ -9,6 +9,7 @@ var cron = require('./cron');
 
 var indexRouter = require('./routes/index');
 var spDaily = require('./routes/spDaily');
+var spMonthly = require('./routes/spMonthly');
 const bodyParser= require('body-parser')
 
 
@@ -33,6 +34,8 @@ app.use(bodyParser.json());
 
 app.use('/', indexRouter);
 app.use('/spDailyKWH', spDaily);
+app.use('/spMonthlyKWH', spMonthly);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
