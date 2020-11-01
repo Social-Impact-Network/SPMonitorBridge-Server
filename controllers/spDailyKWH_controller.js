@@ -20,9 +20,7 @@ exports.create = (_plantID, _day, _kwh) => {
        
       });
   };
-  /**
- * Find one User
- */
+  
 exports.findOne = (req, res) => {
   var dayIn; 
   if (req.params.dayTs){

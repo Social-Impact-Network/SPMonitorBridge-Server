@@ -1,24 +1,25 @@
 const spDailyKWH = require("../model/spDailyKWH");
- /**
- * Find one User
- */
-exports.findOne = (req, res) => {
+
+
+exports.findKwHMonthly = (req, res) => {
 
 
     var dayIn;
     var firstDayMonth;
     var lastDayMonth; 
     var month;
-    //@Todo: request specific month to
+    //returning monthly data based on timestamp
     if (req.params.dayTs){
-      dayIn = new Date(Number(req.params.dayTs)).toISOString().split("T")[0]; // @todo: Validate that param is Timestamp String
+      dayIn = new Date(Number(req.params.dayTs)); // @todo: Validate that param is Timestamp String and has correct length (seconds, milliseconds)
+      month = firstDayMonth = new Date(dayIn.getFullYear(), dayIn.getMonth(), 1).toISOString().split("T")[0];
+      lastDayMonth = new Date(dayIn.getFullYear(), dayIn.getMonth() + 1, 0).toISOString().split("T")[0];
+    
     } else {
+        //returning monthly data for last month
         var date = new Date();
-        
-        month = firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split("T")[0];
-        lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString().split("T")[0];
+        month = firstDayMonth = new Date(date.getFullYear(), date.getMonth()-1, 1).toISOString().split("T")[0];
+        lastDayMonth = new Date(date.getFullYear(), date.getMonth(), 0).toISOString().split("T")[0];
 
-      dayIn = new Date(Date.now() - 86400000).toISOString().split("T")[0];
     }
     
 
@@ -56,7 +57,7 @@ uniqueDays.forEach((c) => {
   }).then((spDailyKWH) => {
       if (!spDailyKWH) {
         return res.status(404).send({
-          message: "No entry found for day:  " + dayIn,
+          message: "No entry found ",
         });
       }
       res.status(200).send(spDailyKWH);
