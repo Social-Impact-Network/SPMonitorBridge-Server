@@ -5,20 +5,54 @@ const spDailyKWH = require("../model/spDailyKWH");
 exports.findOne = (req, res) => {
 
 
-    var dayIn; 
+    var dayIn;
+    var firstDayMonth;
+    var lastDayMonth; 
+    var month;
+    //@Todo: request specific month to
     if (req.params.dayTs){
       dayIn = new Date(Number(req.params.dayTs)).toISOString().split("T")[0]; // @todo: Validate that param is Timestamp String
     } else {
         var date = new Date();
         
-        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split("T")[0];
-        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString().split("T")[0];
+        month = firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split("T")[0];
+        lastDayMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString().split("T")[0];
 
       dayIn = new Date(Date.now() - 86400000).toISOString().split("T")[0];
     }
-      
-    spDailyKWH.findOne({'day':dayIn}, {'_id': false, 'plantID': false, '__v': false}).map(function(doc) { 
-     return {'results': {'day': doc.day.getTime(), 'kwh': parseInt(doc.kwh) }}
+    
+
+
+    spDailyKWH.find({'day': { "$gte": firstDayMonth , "$lte": lastDayMonth}}, {'_id': false, 'plantID': false, '__v': false}).map(function(doc) {
+
+
+
+let uniqueDays = [];
+doc.forEach((c) => {
+
+ if(uniqueDays[uniqueDays.length-1] != undefined){
+     
+    let active = c.day.getTime();
+    let last = uniqueDays[uniqueDays.length-1].day.getTime();
+    if(active !== last){
+        uniqueDays.push(c);
+
+ } } else {
+    uniqueDays.push(c);
+
+
+ }
+
+});
+
+let kwhMonth = 0;
+uniqueDays.forEach((c) => {
+    kwhMonth += c.kwh;
+    });
+
+
+
+     return {'results': {'month': month, 'kwh': Math.round(kwhMonth) }}
   }).then((spDailyKWH) => {
       if (!spDailyKWH) {
         return res.status(404).send({
